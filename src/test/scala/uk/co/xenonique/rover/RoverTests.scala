@@ -28,6 +28,26 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
     ("LLLLL", "0:0:W"),
   )
 
+  private val MOVE_COMMANDS = Table(
+    ("commands", "facing position"), // First tuple defines column names
+    ("M", "0:1:N"),
+    ("MM", "0:2:N"),
+    ("MMM", "0:3:N"),
+    ("RM", "1:0:E"),
+    ("RMM", "2:0:E"),
+    ("RMMM", "3:0:E"),
+    ("LM", "9:0:W"),
+    ("LMM", "8:0:W"),
+    ("LMMM", "7:0:W"),
+    ("LLM", "0:9:S"),
+    ("RRM", "0:9:S"),
+    ("LLMM", "0:8:S"),
+    ("RRMM", "0:8:S"),
+    ("LLMMM", "0:7:S"),
+    ("RRMMM", "0:7:S"),
+  )
+
+
   override def beforeEach(): Unit = {
     rover = new Rover()
   }
@@ -54,5 +74,13 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
         rover.execute(commands) should be(position)
       }
   }
+
+  forAll(MOVE_COMMANDS) {
+    (commands: String, position: String) =>
+      test(s"move rover with input: [$commands] should result in final position: [$position]") {
+        rover.execute(commands) should be(position)
+      }
+  }
+
 }
 
