@@ -43,3 +43,29 @@ would mean that the rover encountered an obstacle at position (1, 2).
     given a grid with no obstacles, input MMRMMLM gives output 2:3:N
     given a grid with no obstacles, input MMMMMMMMMM gives output 0:0:N (due to wrap-around)
     given a grid with an obstacle at (0, 3), input MMMM gives output O:0:2:N
+
+
+### Technical Notes
+
+```bash
+create-scala-project.sh 
+```
+
+Compile with SBT
+
+```bash
+sbt compile
+```
+
+Run the Scala Test with SBT
+
+```bash
+sbt test
+```
+
+
+Clean with SBT
+
+```bash
+sbt clean
+```
