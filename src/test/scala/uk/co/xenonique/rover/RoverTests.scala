@@ -45,6 +45,12 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
     ("RRMM", "0:8:S"),
     ("LLMMM", "0:7:S"),
     ("RRMMM", "0:7:S"),
+    /* WRAP AROUND */
+    ("MMMMMMMMMM", "0:0:N"),
+    ("RMMMMMMMMMM", "0:0:E"),
+    ("LMMMMMMMMMM", "0:0:W"),
+    ("LLMMMMMMMMMM", "0:0:S"),
+    ("RRMMMMMMMMMM", "0:0:S"),
   )
 
 
