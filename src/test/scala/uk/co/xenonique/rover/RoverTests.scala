@@ -11,7 +11,7 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
   private var rover: Rover = _
 
   private val ROTATE_RIGHT_COMMANDS = Table(
-    ("commands", "facing position"),  // First tuple defines column names
+    ("commands", "facing position"), // First tuple defines column names
     ("R", "0:0:E"),
     ("RR", "0:0:S"),
     ("RRR", "0:0:W"),
@@ -20,7 +20,7 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
   )
 
   private val ROTATE_LEFT_COMMANDS = Table(
-    ("commands", "facing position"),  // First tuple defines column names
+    ("commands", "facing position"), // First tuple defines column names
     ("L", "0:0:W"),
     ("LL", "0:0:S"),
     ("LLL", "0:0:E"),
@@ -52,6 +52,35 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
     rover = new Rover()
   }
 
+  test("print direction enumeration values") {
+    println(Direction.values)
+    println(Direction.NORTH)
+    println(Direction.NORTH.shortName)
+  }
+
+  test("retrieve enumeration values known shortname") {
+
+    val mappings = Map(
+      "N" -> Direction.NORTH,
+      "E" -> Direction.EAST,
+      "S" -> Direction.SOUTH,
+      "W" -> Direction.WEST,
+    )
+
+    for (elem <- mappings) {
+      val direction = Direction.shortNameToDirection(elem._1)
+      println(direction)
+      direction should be(elem._2)
+    }
+  }
+
+
+  test("retrieve enumeration value with unknown shortname") {
+    val direction1 = Direction.shortNameToDirection("U")
+    println("direction1=" + direction1)
+    direction1 should be (null)
+  }
+
   test("move the rover") {
     rover.execute("R") should be("0:0:E")
   }
@@ -63,8 +92,8 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
 
   forAll(ROTATE_RIGHT_COMMANDS) {
     (commands: String, position: String) =>
-      test( s"move rover with input: [$commands] should result in final position: [$position]") {
-        rover.execute(commands) should be (position)
+      test(s"move rover with input: [$commands] should result in final position: [$position]") {
+        rover.execute(commands) should be(position)
       }
   }
 
