@@ -69,3 +69,24 @@ Clean with SBT
 ```bash
 sbt clean
 ```
+
+
+## SDK Manager
+
+First of all, please update SDK Manager
+
+```bash
+sdk upgrade
+```
+Upgrade SBT to the version 1.8.2
+
+```bash
+sdk upgrade sdk
+```
+
+Upgrade the Scala version to at least 2.13.10
+
+```bash
+sdk update scala  2.13.10
+```
+

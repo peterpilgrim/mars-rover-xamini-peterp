@@ -2,21 +2,35 @@ package uk.co.xenonique.rover
 
 import uk.co.xenonique.rover.Direction.{Direction, EAST, NORTH, SOUTH, WEST}
 
-class Rover(private val grid: Grid = new Grid()) {
+import scala.util.control.Breaks.{break, breakable}
+
+class Rover(private val grid: Grid = Grid()) {
   private var x = 0
   private var y = 0
   private var direction: Direction = NORTH
 
   def execute(commands: String): String = {
-    for (command <- commands) {
-      command match {
-        case 'L' => rotateLeft()
-        case 'R' => rotateRight()
-        case 'M' => move()
-        case _ => throw new IllegalArgumentException(s"unknown command: [$command]")
+    var blockages = ""
+    breakable {
+      for (command <- commands) {
+        val (lastX, lastY) = (x, y)
+        command match {
+          case 'L' => rotateLeft()
+          case 'R' => rotateRight()
+          case 'M' =>
+            move()
+            if (grid.isObstructed(x, y)) {
+              x = lastX
+              y = lastY
+              blockages = "O:"
+              break
+            }
+          case _ => throw new IllegalArgumentException(s"unknown command: [$command]")
+        }
       }
     }
-    s"$x:$y:${direction.shortName}"
+
+    s"$blockages$x:$y:${direction.shortName}"
   }
 
   def rotateRight(): Unit = {

@@ -3,7 +3,7 @@ package uk.co.xenonique.rover
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers._
-import org.scalatest.prop.{TableDrivenPropertyChecks, TableFor2}
+import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.prop.TableDrivenPropertyChecks._
 
 class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPropertyChecks {
@@ -53,12 +53,16 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
     ("RRMMMMMMMMMM", "0:0:S"),
   )
 
+  private val MOVE_OBSTACLE_COMMANDS = Table(
+    ("commands", "facing position"), // First tuple defines column names
+    ("MMMM", "O:0:2:N"), //     given a grid with an obstacle at (0, 3)
+  )
 
   override def beforeEach(): Unit = {
     rover = new Rover()
   }
 
-  test("print direction enumeration values") {
+  test("demonstrate direction enumeration values") {
     println(Direction.values)
     println(Direction.NORTH)
     println(Direction.NORTH.shortName)
@@ -75,15 +79,22 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
 
     for (elem <- mappings) {
       val direction = Direction.shortNameToDirection(elem._1)
-      println(direction)
       direction should be(elem._2)
     }
   }
 
+  test("create a grid with obstacles") {
+    val grid = Grid( 7,7, Set( Obstacle(3,2)) )
+
+    println( s">>>> $grid" )
+
+    grid.isObstructed(0,2) should be (false)
+    grid.isObstructed(3,0) should be (false)
+    grid.isObstructed(3,2) should be (true)
+  }
 
   test("retrieve enumeration value with unknown shortname") {
     val direction1 = Direction.shortNameToDirection("U")
-    println("direction1=" + direction1)
     direction1 should be (null)
   }
 
@@ -117,5 +128,12 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
       }
   }
 
+  forAll(MOVE_OBSTACLE_COMMANDS) {
+    (commands: String, position: String) =>
+      test(s"move rover with input: [$commands] should result in final position: [$position]") {
+        rover = new Rover( Grid(10, 10, Set( Obstacle(0,3)) ) )
+        rover.execute(commands) should be(position)
+      }
+  }
 }
 
