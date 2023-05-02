@@ -130,7 +130,7 @@ class RoverTests extends AnyFunSuite with BeforeAndAfterEach with TableDrivenPro
 
   forAll(MOVE_OBSTACLE_COMMANDS) {
     (commands: String, position: String) =>
-      test(s"move rover with input: [$commands] should result in final position: [$position]") {
+      test(s"move rover with input: [$commands] should result in final position: [$position] hit an obstacle") {
         rover = new Rover( Grid(10, 10, Set( Obstacle(0,3)) ) )
         rover.execute(commands) should be(position)
       }
