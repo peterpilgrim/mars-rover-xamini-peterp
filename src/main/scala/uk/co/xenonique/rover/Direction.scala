@@ -10,7 +10,6 @@ object Direction extends Enumeration {
   def shortNameToDirection(str1: String): Direction = {
 
     val y = Direction.values.find( _.shortName.equals(str1) )
-    println(">>>> y="+y)
     if (y.isDefined) y.get else null
   }
 
